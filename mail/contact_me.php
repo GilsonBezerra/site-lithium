@@ -1,4 +1,5 @@
 <?php
+setlocale(LC_ALL, 'pt_BR.utf8');
 // Check for empty fields
 if(empty($_POST['name'])      ||
    empty($_POST['email'])     ||
