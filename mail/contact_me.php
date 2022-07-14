@@ -5,10 +5,12 @@ if(empty($_POST['name'])      ||
    empty($_POST['email'])     ||
    empty($_POST['phone'])     ||
    empty($_POST['message'])   ||
-   !filter_var($_POST['email'],FILTER_VALIDATE_EMAIL))
-   {
-   echo "No arguments Provided!";
-   return false;
+   !filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)){
+      echo  "<script>
+               window.location='index.html';
+               alert('Todos os campos são de preenchimento obrigatório!');
+            </script>"; ;
+      return "index.html";
    }
    
 $name = strip_tags(htmlspecialchars($_POST['name']));
