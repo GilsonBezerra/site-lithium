@@ -1,5 +1,5 @@
 <?php
-ini_set('default_charset','UTF-8');
+ini_set('Content-Type: text/html; charset=UTF-8');
 // Check for empty fields
 if(empty($_POST['name'])      ||
    empty($_POST['email'])     ||
