@@ -17,22 +17,22 @@ if(empty($_POST['name'])      ||
  
  //REMETENTE --> ESTE EMAIL TEM QUE SER VALIDO DO DOMINIO
  //==================================================== 
- $email_remetente = "contato@lithiumcode.com.br"; // deve ser uma conta de email do seu dominio 
+ $email_remetente = "contato@lithiumproducoes.com.br"; // deve ser uma conta de email do seu dominio 
  //====================================================
  
  //Configurações do email, ajustar conforme necessidade
  //==================================================== 
- $email_destinatario = "contato@lithiumcode.com.br"; // pode ser qualquer email que receberá as mensagens
+ $email_destinatario = "contato@lithiumproducoes.com.br"; // pode ser qualquer email que receberá as mensagens
  $email_reply = "$email"; 
  $email_assunto = "Contato do Site"; // Este será o assunto da mensagem
  //====================================================
  
  //Monta o Corpo da Mensagem
  //====================================================
- $email_conteudo = "Nome = $nome \n"; 
+ $email_conteudo = "Nome = $name \n"; 
  $email_conteudo .= "Email = $email \n";
- $email_conteudo .= "Telefone = $telefone \n"; 
- $email_conteudo .= "Mensagem = $mensagem \n"; 
+ $email_conteudo .= "Telefone = $phone \n"; 
+ $email_conteudo .= "Mensagem = $message \n"; 
  //====================================================
  
  //Seta os Headers (Alterar somente caso necessario) 
