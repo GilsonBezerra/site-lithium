@@ -2,10 +2,10 @@
  
  //Variaveis de POST, Alterar somente se necessário 
  //====================================================
- if(empty($nome = $_POST['nome'])           ||
+ if(empty($nome = $_POST['name'])           ||
     empty($email = $_POST['email'])         ||
-    empty($telefone = $_POST['telefone'])   ||
-    empty($mensagem = $_POST['mensagem'])   ||
+    empty($telefone = $_POST['phone'])   ||
+    empty($mensagem = $_POST['message'])   ||
     !filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)){
     echo  "<script>
                 window.location='index.html';
