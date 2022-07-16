@@ -1,5 +1,5 @@
 <?php
-
+ini_set('default_charset','UTF-8');
 // Check for empty fields
 if(empty($_POST['name'])      ||
    empty($_POST['email'])     ||
@@ -13,10 +13,10 @@ if(empty($_POST['name'])      ||
       return "index.html";
    }
    
-$name = utf8_decode($_POST['name']);
+$name = strip_tags(htmlspecialchars(utf8_decode($_POST['name'])));
 $email_address = strip_tags(htmlspecialchars($_POST['email']));
 $phone = strip_tags(htmlspecialchars($_POST['phone']));
-$message = utf8_decode(($_POST['message']);
+$message = strip_tags(htmlspecialchars(utf8_decode($_POST['message'])));
    
 // Create the email and send the message
 $to = 'contato@lithiumproducoes.com.br'; // Add your email address inbetween the '' replacing yourname@yourdomain.com - This is where the form will send a message to.
