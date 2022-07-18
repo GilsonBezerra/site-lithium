@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=UTF-8');
 // Check for empty fields
 if(empty($_POST['name'])      ||
    empty($_POST['email'])     ||
@@ -23,6 +24,6 @@ $email_subject = "Contato do site de:  $name";
 $email_body = "Você acaba de receber um novo contato via site Lithium Produções!.\n\n"."Veja os detalhes:\n\nNome: $name\n\nEmail: $email_address\n\nTelefone: $phone\n\nMensagem:\n$message";
 $headers = "From: contato@lithiumproducoes.com.br\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
 $headers .= "Reply-To: $email_address";   
-mail(utf8_decode($to,$email_subject,$email_body,$headers));
+mail($to,$email_subject,$email_body,$headers);
 return true;         
 ?>
