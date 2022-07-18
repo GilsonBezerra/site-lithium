@@ -1,31 +1,58 @@
 <?php
-// Check for empty fields
-if(empty($name = $_POST['name'])               ||
-   empty($email_address = $_POST['email'])     ||
-   empty($phone = $_POST['phone'])             ||
-   empty($message = $_POST['message'])         ||
-   !filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)){
-      echo  "<script>
-               window.location='index.html';
-               alert('Todos os campos são de preenchimento obrigatório!');
+ 
+ //Variaveis de POST, Alterar somente se necessário 
+ //====================================================
+ if(empty($name = $_POST['nome'])           ||
+    empty($email = $_POST['email'])         ||
+    empty($phone = $_POST['telefone'])   ||
+    empty($message= $_POST['mensagem'])   ||
+    !filter_var($_POST['email'],FILTER_VALIDATE_EMAIL)){
+    echo  "<script>
+                window.location='index.html';
+                alert('Todos os campos são de preenchimento obrigatório!');
             </script>"; ;
-      return "index.html";
-   }
-   
-// Create the email and send the message
-$to = 'contato@lithiumproducoes.com.br'; // Add your email address inbetween the '' replacing yourname@yourdomain.com - This is where the form will send a message to.
-$email_subject = "Contato do site de:  $name";
-$email_conteudo = "Nome = $name \n"; 
-$email_conteudo .= "Email = $email \n";
-$email_conteudo .= "Telefone = $phone \n"; 
-$email_conteudo .= "Mensagem = $message \n"; 
-$email_body = "Você acaba de receber um novo contato via site Lithium Produções!.\n\n"."Veja os detalhes:\n$email_conteudo";
+    return "index.html";
+}
+ //====================================================
+ 
+ //REMETENTE --> ESTE EMAIL TEM QUE SER VALIDO DO DOMINIO
+ //==================================================== 
+ $email_remetente = "contato@lithiumproducoes.com.br"; // deve ser uma conta de email do seu dominio 
+ //====================================================
+ 
+ //Configurações do email, ajustar conforme necessidade
+ //==================================================== 
+ $email_destinatario = "contato@lithiumproducoes.com.br"; // pode ser qualquer email que receberá as mensagens
+ $email_reply = "$email"; 
+ $email_assunto = "Contato do Site"; // Este será o assunto da mensagem
+ //====================================================
+ 
+ //Monta o Corpo da Mensagem
+ //====================================================
+ $email_conteudo = "Nome = $name \n"; 
+ $email_conteudo .= "Email = $email \n";
+ $email_conteudo .= "Telefone = $phoone \n"; 
+ $email_conteudo .= "Mensagem = $message \n"; 
+ //====================================================
+ 
+ //Seta os Headers (Alterar somente caso necessario) 
+ //==================================================== 
+ $email_headers = implode ( "\n",array ( "From: $email_remetente", "Reply-To: $email_reply", "Return-Path: $email_remetente","MIME-Version: 1.0","X-Priority: 3","Content-Type: text/html; charset=UTF-8" ) );
+ //====================================================
+ 
+ //Enviando o email 
+ //==================================================== 
+ if (mail($email_destinatario, $email_assunto, nl2br($email_conteudo), $email_headers)){ 
+ echo "<script>
+            window.location='index.html';
+            alert('$nome, sua mensagem foi enviada com sucesso! Estaremos retornando em breve');
+        </script>"; 
+ 
+ } 
+ else{ 
+ echo "</b>Falha no envio do E-Mail!</b>"; } 
+ //====================================================
+ 
+ ?>
+ <a href="index.html">Clique aqui para voltar ao site</a>
 
-// $headers = "MIME-Version: 1.0" . "\r\n";
-// $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-// $headers = "From: contato@lithiumproducoes.com.br\n"; // This is the email address the generated message will be from. We recommend using something like noreply@yourdomain.com.
-// $headers = "Reply-To: $email_address"; 
-$email_headers = implode ("\n",array ( "From: contato@lithiumproducoes.com.br", "Reply-To: $email_address", "Return-Path: $email_address","MIME-Version: 1.0","X-Priority: 3","Content-Type: text/html; charset=UTF-8" ));  
-mail($to,$email_subject,$email_body,nl2br($email_conteudo),$email_headers);
-return true;         
-?>
