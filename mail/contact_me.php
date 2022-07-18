@@ -12,7 +12,7 @@ if(empty($_POST['name'])      ||
       return "index.html";
    }
    
-$name = $_POST['name'];
+$name = utf8_encode($_POST['name']);
 $email_address = $_POST['email'];
 $phone = $_POST['phone'];
 $message = $_POST['message'];
