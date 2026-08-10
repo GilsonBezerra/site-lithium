@@ -57,6 +57,6 @@ module.exports = async function contactHandler(req, res) {
     res.status(200).json({ ok: true });
   } catch (err) {
     console.error('Erro ao enviar e-mail de contato:', err);
-    res.status(500).json({ ok: false, error: 'Não foi possível enviar sua mensagem. Tente novamente mais tarde.', debug: String(err && err.message) });
+    res.status(500).json({ ok: false, error: 'Não foi possível enviar sua mensagem. Tente novamente mais tarde.' });
   }
 };
