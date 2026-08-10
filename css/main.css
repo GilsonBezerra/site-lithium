@@ -1,0 +1,923 @@
+/* ==========================================================================
+   Lithium Entertainment — design system
+   ========================================================================== */
+
+:root {
+  --bg: #0a0a0f;
+  --bg-alt: #100f17;
+  --surface: #18161f;
+  --surface-2: #201d29;
+  --border: #2c2836;
+
+  --text: #f4f2f7;
+  --text-muted: #a7a2b3;
+
+  --violet: #8b5cf6;
+  --violet-dark: #6d28d9;
+  --rose: #f43f5e;
+  --amber: #facc15;
+  --cyan: #22d3ee;
+
+  --gradient-brand: linear-gradient(120deg, var(--violet) 0%, var(--rose) 100%);
+
+  --font-display: 'Anton', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --container-w: 1140px;
+  --radius: 14px;
+  --shadow-lg: 0 30px 60px -20px rgba(0, 0, 0, 0.6);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lith-container {
+  width: 100%;
+  max-width: var(--container-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---- Buttons -------------------------------------------------------- */
+
+.lith-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 14px 32px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.lith-btn--primary {
+  background: var(--gradient-brand);
+  color: #fff;
+  box-shadow: 0 10px 30px -10px rgba(244, 63, 94, 0.55);
+}
+
+.lith-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px -12px rgba(244, 63, 94, 0.7);
+}
+
+.lith-btn--ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.lith-btn--ghost:hover {
+  border-color: var(--violet);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.lith-btn--sm {
+  padding: 10px 22px;
+  font-size: 0.85rem;
+}
+
+.lith-btn--block {
+  width: 100%;
+}
+
+.lith-btn:disabled,
+.lith-btn--loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ---- Nav -------------------------------------------------------------- */
+
+.lith-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 20px 0;
+  transition: background 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lith-nav--scrolled {
+  background: rgba(10, 10, 15, 0.92);
+  backdrop-filter: blur(10px);
+  padding: 12px 0;
+  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid var(--border);
+}
+
+.lith-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lith-nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lith-nav__brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: var(--gradient-brand);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+}
+
+.lith-nav__brand-text {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: #fff;
+  letter-spacing: 0.02em;
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.lith-nav__brand-text em {
+  font-style: normal;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.lith-nav__toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.lith-nav__toggle span {
+  width: 24px;
+  height: 2px;
+  background: #fff;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.lith-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.lith-nav__links a {
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.lith-nav__links a:hover {
+  color: #fff;
+}
+
+.lith-nav__cta {
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--gradient-brand);
+  color: #fff !important;
+}
+
+/* ---- Hero --------------------------------------------------------------- */
+
+.lith-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: radial-gradient(circle at 20% 15%, rgba(139, 92, 246, 0.35), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(244, 63, 94, 0.25), transparent 50%),
+    var(--bg);
+}
+
+.lith-hero__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.18) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.lith-hero__halftone {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7) 40%, transparent 90%);
+  pointer-events: none;
+}
+
+.lith-hero__inner {
+  position: relative;
+  z-index: 1;
+  padding-top: 90px;
+  padding-bottom: 90px;
+  max-width: 780px;
+}
+
+.lith-badge {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+.lith-hero__title {
+  font-size: clamp(2.8rem, 7vw, 5.2rem);
+  line-height: 0.98;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.lith-hero__title-accent {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lith-hero__subtitle {
+  margin-top: 26px;
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 560px;
+}
+
+.lith-hero__actions {
+  margin-top: 36px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.lith-hero__scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  animation: lith-bounce 2s infinite;
+}
+
+@keyframes lith-bounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, 8px); }
+}
+
+/* ---- Sections ------------------------------------------------------------ */
+
+.lith-section {
+  padding: 120px 0;
+}
+
+.lith-section--alt {
+  background: var(--bg-alt);
+}
+
+.lith-section--tight {
+  padding: 60px 0;
+}
+
+.lith-section__head {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 64px;
+}
+
+.lith-eyebrow {
+  display: inline-block;
+  color: var(--rose);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.lith-heading {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.lith-lede {
+  margin-top: 18px;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+/* ---- Grid & cards --------------------------------------------------------- */
+
+.lith-grid {
+  display: grid;
+  gap: 28px;
+}
+
+.lith-grid--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.lith-grid--team {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+  justify-content: center;
+}
+
+.lith-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 32px;
+  text-align: center;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.lith-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--violet);
+  box-shadow: var(--shadow-lg);
+}
+
+.lith-card__icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 22px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.lith-card__icon--violet { background: linear-gradient(135deg, var(--violet), var(--violet-dark)); }
+.lith-card__icon--rose { background: linear-gradient(135deg, var(--rose), #be123c); }
+.lith-card__icon--amber { background: linear-gradient(135deg, var(--amber), #b45309); }
+
+.lith-card__title {
+  font-size: 1.3rem;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.lith-card__text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ---- Portfolio -------------------------------------------------------- */
+
+.lith-portfolio-item {
+  position: relative;
+  display: block;
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.lith-portfolio-item__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.lith-portfolio-item:hover .lith-portfolio-item__img {
+  transform: scale(1.06);
+}
+
+.lith-portfolio-item__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.15), rgba(10, 10, 15, 0.85));
+  color: #fff;
+  font-size: 1.6rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.lith-portfolio-item:hover .lith-portfolio-item__overlay {
+  opacity: 1;
+}
+
+.lith-portfolio-item__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px 20px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.85), transparent);
+  color: #fff;
+}
+
+.lith-portfolio-item__caption h4 {
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.lith-portfolio-item__caption p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ---- Timeline ------------------------------------------------------------ */
+
+.lith-timeline {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.lith-timeline::before {
+  content: '';
+  position: absolute;
+  left: 28px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--violet), var(--rose));
+}
+
+.lith-timeline__item {
+  position: relative;
+  padding-left: 76px;
+  margin-bottom: 40px;
+}
+
+.lith-timeline__item:last-child {
+  margin-bottom: 0;
+}
+
+.lith-timeline__marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--violet);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  z-index: 1;
+}
+
+.lith-timeline__panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px 28px;
+}
+
+.lith-timeline__panel h4 {
+  color: #fff;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.lith-timeline__panel p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.lith-timeline__panel--cta {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(244, 63, 94, 0.1));
+  border-color: var(--violet);
+}
+
+.lith-timeline__panel--cta h4 {
+  margin-bottom: 18px;
+}
+
+/* ---- Team --------------------------------------------------------------- */
+
+.lith-team-card {
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+}
+
+.lith-team-card__img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 18px;
+  border: 3px solid var(--violet);
+}
+
+.lith-team-card h4 {
+  color: #fff;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+.lith-team-card__role {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  margin: 8px 0 16px;
+}
+
+.lith-social {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.lith-social a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+}
+
+.lith-social a:hover {
+  color: #fff;
+  border-color: var(--violet);
+  background: var(--violet);
+}
+
+/* ---- Badges / partners ---------------------------------------------------- */
+
+.lith-badges {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 56px;
+  flex-wrap: wrap;
+}
+
+.lith-badges img {
+  max-height: 64px;
+  width: auto;
+  filter: grayscale(1) brightness(1.8) opacity(0.6);
+  transition: filter 0.25s ease;
+}
+
+.lith-badges img:hover {
+  filter: none;
+}
+
+/* ---- Contact --------------------------------------------------------------- */
+
+.lith-contact {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 56px;
+  align-items: start;
+}
+
+.lith-contact__list {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lith-contact__list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-muted);
+}
+
+.lith-contact__list i {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--violet);
+}
+
+.lith-contact__form-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+}
+
+.lith-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.lith-form-group {
+  margin-bottom: 20px;
+}
+
+.lith-input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lith-input::placeholder {
+  color: var(--text-muted);
+}
+
+.lith-input:focus {
+  outline: none;
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+}
+
+.lith-input--invalid {
+  border-color: var(--rose);
+}
+
+textarea.lith-input {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.lith-form-error {
+  margin: 6px 0 0;
+  font-size: 0.8rem;
+  color: var(--rose);
+  min-height: 1em;
+}
+
+.lith-form-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.lith-form-feedback {
+  margin-bottom: 18px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  min-height: 0;
+}
+
+.lith-form-feedback--success {
+  color: #34d399;
+}
+
+.lith-form-feedback--error {
+  color: var(--rose);
+}
+
+/* ---- Footer ------------------------------------------------------------- */
+
+.lith-footer {
+  padding: 36px 0;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.lith-footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.lith-footer__copy {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.lith-footer__links {
+  display: flex;
+  gap: 24px;
+  font-size: 0.85rem;
+}
+
+.lith-footer__links a {
+  color: var(--text-muted);
+}
+
+.lith-footer__links a:hover {
+  color: #fff;
+}
+
+/* ---- Modals --------------------------------------------------------------- */
+
+.lith-modal .modal-content {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 40px;
+  position: relative;
+}
+
+.lith-modal__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-alt);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.lith-modal__close:hover {
+  border-color: var(--rose);
+  color: var(--rose);
+}
+
+.lith-modal__tag {
+  color: var(--rose);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.lith-modal .modal-body h2 {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.lith-modal__img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 24px;
+}
+
+.lith-modal__credits {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+/* ---- Responsive ------------------------------------------------------------ */
+
+@media (max-width: 991px) {
+  .lith-nav__toggle {
+    display: flex;
+  }
+
+  .lith-nav__menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: min(320px, 80vw);
+    background: var(--bg-alt);
+    border-left: 1px solid var(--border);
+    padding: 100px 32px 32px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .lith-nav__menu--open {
+    transform: translateX(0);
+  }
+
+  .lith-nav__links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .lith-grid--3 {
+    grid-template-columns: 1fr;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  .lith-contact {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .lith-section {
+    padding: 80px 0;
+  }
+
+  .lith-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .lith-footer__inner {
+    flex-direction: column;
+    text-align: center;
+  }
+}
