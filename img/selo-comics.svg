@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-labelledby="title">
+  <title id="title">Selo Lithium Comics</title>
+  <defs>
+    <linearGradient id="ringComics" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#f43f5e"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="120" cy="120" r="112" fill="none" stroke="url(#ringComics)" stroke-width="2.5"/>
+  <circle cx="120" cy="120" r="101" fill="none" stroke="#8b5cf6" stroke-opacity="0.35" stroke-width="1" stroke-dasharray="2 5"/>
+  <circle cx="120" cy="120" r="66" fill="#14121c" stroke="#8b5cf6" stroke-width="3"/>
+
+  <path id="comicsTopArc" d="M 34,120 A 86,86 0 0 1 206,120" fill="none"/>
+  <path id="comicsBottomArc" d="M 34,120 A 86,86 0 0 0 206,120" fill="none"/>
+
+  <text font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="20" letter-spacing="4" fill="#f4f2f7">
+    <textPath href="#comicsTopArc" startOffset="50%" text-anchor="middle">LITHIUM</textPath>
+  </text>
+  <text font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="18" letter-spacing="4" fill="#8b5cf6">
+    <textPath href="#comicsBottomArc" startOffset="50%" text-anchor="middle" dy="-6">COMICS</textPath>
+  </text>
+
+  <path d="M 34,120 l -8,-8 l 0,16 z" fill="#8b5cf6"/>
+  <path d="M 206,120 l 8,-8 l 0,16 z" fill="#8b5cf6"/>
+
+  <!-- speech-bubble mark -->
+  <g transform="translate(120,122)">
+    <rect x="-27" y="-22" width="54" height="36" rx="10" fill="none" stroke="#f4f2f7" stroke-width="3.5"/>
+    <path d="M -12,14 L -18,26 L 0,14 Z" fill="#f4f2f7"/>
+    <path d="M -3,-13 L 5,-13 L -1,1 L 6,1 L -6,17 L -2,2 L -9,2 Z" fill="#8b5cf6"/>
+  </g>
+</svg>
