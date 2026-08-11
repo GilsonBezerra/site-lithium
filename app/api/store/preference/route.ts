@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Preference } from "mercadopago";
 import { mpClient } from "@/lib/mercadopago";
 import { prisma } from "@/lib/prisma";
-import { PAYMENT_ENABLED, PIX_ENABLED, isBuyable } from "@/lib/payment-config";
+import { PIX_ENABLED, isBuyable } from "@/lib/payment-config";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -11,10 +11,6 @@ type CartLine = { workId: string; quantity: number };
 
 // Cria a Preference que o Payment Brick usa para inicializar (Pix + cartão).
 export async function POST(req: NextRequest) {
-  if (!PAYMENT_ENABLED) {
-    return NextResponse.json({ error: "A loja ainda não está disponível." }, { status: 503 });
-  }
-
   const body = await req.json().catch(() => null);
   const { items, payerEmail } = (body || {}) as { items?: CartLine[]; payerEmail?: string };
 

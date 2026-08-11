@@ -14,6 +14,7 @@ export type Work = {
   credits: Credit[];
   forSale: boolean;
   price: string | null;
+  featured: boolean;
 };
 
 export type TeamMember = {

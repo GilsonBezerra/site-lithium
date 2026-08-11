@@ -279,7 +279,20 @@ ul {
   z-index: 1;
   padding-top: 90px;
   padding-bottom: 90px;
-  max-width: 780px;
+  display: flex;
+  align-items: center;
+  gap: 56px;
+  flex-wrap: wrap;
+}
+
+.lith-hero__content {
+  flex: 1 1 480px;
+  max-width: 640px;
+}
+
+.lith-hero__carousel {
+  flex: 1 1 340px;
+  max-width: 400px;
 }
 
 .lith-badge {
@@ -1429,5 +1442,114 @@ textarea.lith-input {
 
   .lith-drawer {
     max-width: 100%;
+  }
+}
+
+/* ---- Carrossel de destaques (hero) ---- */
+
+.lith-carousel {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.lith-carousel__slide {
+  display: block;
+  position: relative;
+  aspect-ratio: 4 / 5;
+}
+
+.lith-carousel__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lith-carousel__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24px 20px 44px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.88), transparent);
+  color: #fff;
+}
+
+.lith-carousel__tag {
+  display: block;
+  color: var(--rose);
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.lith-carousel__caption h4 {
+  font-size: 1.15rem;
+  text-transform: uppercase;
+}
+
+.lith-carousel__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(10, 10, 15, 0.55);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lith-carousel__arrow--prev {
+  left: 14px;
+}
+
+.lith-carousel__arrow--next {
+  right: 14px;
+}
+
+.lith-carousel__arrow:hover {
+  border-color: var(--violet);
+}
+
+.lith-carousel__dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.lith-carousel__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  padding: 0;
+}
+
+.lith-carousel__dot.active {
+  background: #fff;
+  width: 20px;
+  border-radius: 4px;
+}
+
+@media (max-width: 640px) {
+  .lith-hero__carousel {
+    max-width: 100%;
+    flex-basis: 100%;
   }
 }

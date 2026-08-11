@@ -2,15 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { Payment } from "mercadopago";
 import { mpClient } from "@/lib/mercadopago";
 import { prisma } from "@/lib/prisma";
-import { PAYMENT_ENABLED, PIX_ENABLED } from "@/lib/payment-config";
+import { PIX_ENABLED } from "@/lib/payment-config";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 export async function POST(req: NextRequest) {
-  if (!PAYMENT_ENABLED) {
-    return NextResponse.json({ error: "A loja ainda não está disponível." }, { status: 503 });
-  }
-
   const body = await req.json().catch(() => null);
   const { orderId, paymentMethodId, payerEmail, token, installments, issuerId } = body || {};
 

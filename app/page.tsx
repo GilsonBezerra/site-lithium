@@ -34,7 +34,10 @@ export default async function HomePage() {
     credits: w.credits.map((c) => ({ role: c.role, name: c.name })),
     forSale: w.saleEnabled && w.price != null,
     price: w.price != null ? String(w.price) : null,
+    featured: w.featured,
   }));
+
+  const featuredWorks = works.filter((w) => w.featured);
 
   const team: TeamMember[] = dbTeam.map((m) => ({ id: m.id, name: m.name, role: m.role, photo: m.photoUrl }));
 
@@ -49,7 +52,9 @@ export default async function HomePage() {
   return (
     <>
       <Nav />
-      <Hero />
+      <Hero
+        featured={featuredWorks.map((w) => ({ id: w.id, title: w.title, tag: w.tag, coverImage: w.thumbnail }))}
+      />
       <Services />
       <Portfolio works={works} />
       <About timeline={timeline} />
