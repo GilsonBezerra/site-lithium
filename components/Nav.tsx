@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const LINKS = [
-  { href: "#page-top", label: "Início" },
-  { href: "#services", label: "O que fazemos" },
-  { href: "#portfolio", label: "Portfólio" },
-  { href: "#about", label: "Sobre nós" },
-  { href: "#team", label: "Nosso time" },
+  { href: "/#page-top", label: "Início" },
+  { href: "/#services", label: "O que fazemos" },
+  { href: "/#portfolio", label: "Portfólio" },
+  { href: "/#about", label: "Sobre nós" },
+  { href: "/#team", label: "Nosso time" },
   { href: "/loja", label: "Loja" },
 ];
 
@@ -25,12 +26,12 @@ export default function Nav() {
   return (
     <nav className={`lith-nav${scrolled ? " lith-nav--scrolled" : ""}`} id="mainNav">
       <div className="lith-container lith-nav__inner">
-        <a className="lith-nav__brand" href="#page-top" onClick={() => setOpen(false)}>
+        <Link className="lith-nav__brand" href="/#page-top" onClick={() => setOpen(false)}>
           <span className="lith-nav__brand-mark">Li</span>
           <span className="lith-nav__brand-text">
             Lithium<em>Entertainment</em>
           </span>
-        </a>
+        </Link>
         <button
           className={`lith-nav__toggle${open ? " lith-nav__toggle--open" : ""}`}
           type="button"
@@ -47,15 +48,21 @@ export default function Nav() {
           <ul className="lith-nav__links">
             {LINKS.map((link) => (
               <li key={link.href}>
-                <a href={link.href} onClick={() => setOpen(false)}>
+                <Link href={link.href} onClick={() => setOpen(false)}>
                   {link.label}
-                </a>
+                </Link>
               </li>
             ))}
             <li>
-              <a className="lith-nav__cta" href="#contact" onClick={() => setOpen(false)}>
+              <Link href="/admin/login" onClick={() => setOpen(false)} aria-label="Entrar no painel admin">
+                <i className="fas fa-lock" style={{ marginRight: 6 }}></i>
+                Admin
+              </Link>
+            </li>
+            <li>
+              <Link className="lith-nav__cta" href="/#contact" onClick={() => setOpen(false)}>
                 Fale conosco
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
