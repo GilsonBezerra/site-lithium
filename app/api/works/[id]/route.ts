@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { parsePrice } from "@/lib/price";
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions);
@@ -25,8 +26,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   const body = await req.json();
   const { title, type, status, description, coverImage, price, saleEnabled, featured, order, credits } = body;
 
-  if (saleEnabled && !price) {
+  const parsedPrice = parsePrice(price);
+  if (saleEnabled && parsedPrice === null) {
     return NextResponse.json({ error: "Informe o preço para colocar a obra à venda" }, { status: 400 });
+  }
+  if (Number.isNaN(parsedPrice)) {
+    return NextResponse.json({ error: "Preço inválido. Use um formato como 39.90 ou 39,90." }, { status: 400 });
   }
 
   const work = await prisma.$transaction(async (tx) => {
@@ -41,7 +46,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         status,
         description: description || null,
         coverImage: coverImage || undefined,
-        price: price ? Number(price) : null,
+        price: parsedPrice,
         saleEnabled: Boolean(saleEnabled),
         featured: Boolean(featured),
         order: order ?? undefined,

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { parsePrice } from "@/lib/price";
 
 const TYPES = ["COMIC", "BOOK", "GAME"];
 const STATUSES = ["IN_DEVELOPMENT", "AVAILABLE"];
@@ -31,8 +32,12 @@ export async function POST(req: NextRequest) {
   if (status && !STATUSES.includes(status)) {
     return NextResponse.json({ error: "status inválido" }, { status: 400 });
   }
-  if (saleEnabled && !price) {
+  const parsedPrice = parsePrice(price);
+  if (saleEnabled && parsedPrice === null) {
     return NextResponse.json({ error: "Informe o preço para colocar a obra à venda" }, { status: 400 });
+  }
+  if (Number.isNaN(parsedPrice)) {
+    return NextResponse.json({ error: "Preço inválido. Use um formato como 39.90 ou 39,90." }, { status: 400 });
   }
 
   const work = await prisma.work.create({
@@ -42,7 +47,7 @@ export async function POST(req: NextRequest) {
       status: status || "IN_DEVELOPMENT",
       description: description || null,
       coverImage,
-      price: price ? Number(price) : null,
+      price: parsedPrice,
       saleEnabled: Boolean(saleEnabled),
       featured: Boolean(featured),
       credits: {

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { uploadToCloudinary } from "@/lib/cloudinary-client";
+import { parsePrice } from "@/lib/price";
 
 type Credit = { role: string; name: string };
 
@@ -68,9 +69,16 @@ export default function WorkForm({ workId, initial }: { workId?: string; initial
       setError("Informe o título.");
       return;
     }
-    if (values.saleEnabled && !values.price.trim()) {
-      setError("Informe o preço — sem preço a obra fica marcada como à venda mas não aparece na loja.");
-      return;
+    if (values.saleEnabled) {
+      const parsed = parsePrice(values.price);
+      if (parsed === null) {
+        setError("Informe o preço — sem preço a obra fica marcada como à venda mas não aparece na loja.");
+        return;
+      }
+      if (Number.isNaN(parsed)) {
+        setError("Preço inválido. Use um formato como 39.90 ou 39,90.");
+        return;
+      }
     }
 
     setLoading(true);
@@ -194,7 +202,7 @@ export default function WorkForm({ workId, initial }: { workId?: string; initial
           <input
             id="price"
             className="lith-input"
-            placeholder="49.90"
+            placeholder="49.90 ou 49,90"
             required
             value={values.price}
             onChange={(e) => update("price", e.target.value)}
