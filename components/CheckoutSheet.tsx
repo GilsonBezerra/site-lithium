@@ -3,14 +3,21 @@
 import { useEffect, useState } from "react";
 import { initMercadoPago, Payment } from "@mercadopago/sdk-react";
 import type { IPaymentFormData } from "@mercadopago/sdk-react/esm/bricks/payment/type";
-
-type Work = { id: string; title: string; price: string | number };
+import type { CartItem } from "@/lib/cart-context";
 
 let mpInitialized = false;
 
-export default function CheckoutSheet({ work, onClose }: { work: Work; onClose: () => void }) {
+export default function CheckoutSheet({
+  items,
+  total,
+  onSuccess,
+}: {
+  items: CartItem[];
+  total: number;
+  onSuccess: () => void;
+}) {
   const [email, setEmail] = useState("");
-  const [step, setStep] = useState<"email" | "brick" | "pix" | "done" | "error">("email");
+  const [step, setStep] = useState<"email" | "brick" | "pix" | "done">("email");
   const [preferenceId, setPreferenceId] = useState("");
   const [orderId, setOrderId] = useState("");
   const [pix, setPix] = useState<{ qrCode?: string; qrCodeBase64?: string } | null>(null);
@@ -25,13 +32,6 @@ export default function CheckoutSheet({ work, onClose }: { work: Work; onClose: 
     }
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
-
   async function startCheckout(e: React.FormEvent) {
     e.preventDefault();
     setError("");
@@ -40,7 +40,10 @@ export default function CheckoutSheet({ work, onClose }: { work: Work; onClose: 
       const res = await fetch("/api/store/preference", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ workId: work.id, payerEmail: email }),
+        body: JSON.stringify({
+          items: items.map((i) => ({ workId: i.workId, quantity: i.quantity })),
+          payerEmail: email,
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Não foi possível iniciar o pagamento.");
@@ -73,77 +76,73 @@ export default function CheckoutSheet({ work, onClose }: { work: Work; onClose: 
     } else {
       setStep("done");
     }
+    onSuccess();
   }
 
   return (
-    <div className="lith-modal-backdrop" onClick={onClose}>
-      <div className="lith-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-content">
-          <button type="button" className="lith-modal__close" aria-label="Fechar" onClick={onClose}>
-            <i className="fas fa-times"></i>
-          </button>
-          <div className="modal-body">
-            <p className="lith-modal__tag">Comprar</p>
-            <h2>{work.title}</h2>
-            <p style={{ marginBottom: 20 }}>
-              R$ {Number(work.price).toFixed(2).replace(".", ",")}
-            </p>
+    <div className="lith-checkout">
+      <p style={{ marginBottom: 20, color: "var(--text-muted)" }}>
+        {items.length} {items.length === 1 ? "item" : "itens"} · Total: R$ {total.toFixed(2).replace(".", ",")}
+      </p>
 
-            {step === "email" && (
-              <form onSubmit={startCheckout}>
-                <div className="lith-form-group">
-                  <input
-                    className="lith-input"
-                    type="email"
-                    placeholder="Seu e-mail *"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                {error && <p className="lith-admin-error" style={{ marginBottom: 16 }}>{error}</p>}
-                <button className="lith-btn lith-btn--primary lith-btn--block" type="submit" disabled={loading}>
-                  {loading ? "Preparando..." : "Continuar"}
-                </button>
-              </form>
-            )}
-
-            {step === "brick" && preferenceId && (
-              <>
-                {error && <p className="lith-admin-error" style={{ marginBottom: 16 }}>{error}</p>}
-                <Payment
-                  initialization={{ amount: Number(work.price), preferenceId }}
-                  onSubmit={handleBrickSubmit}
-                  onError={() => setError("Erro ao processar o pagamento.")}
-                  customization={{
-                    paymentMethods: {
-                      creditCard: "all",
-                      bankTransfer: "all",
-                      maxInstallments: 3,
-                    },
-                  }}
-                />
-              </>
-            )}
-
-            {step === "pix" && pix && (
-              <div style={{ textAlign: "center" }}>
-                <p style={{ marginBottom: 16 }}>Escaneie o QR Code ou copie o código Pix abaixo:</p>
-                {pix.qrCodeBase64 && (
-                  <img
-                    src={`data:image/png;base64,${pix.qrCodeBase64}`}
-                    alt="QR Code Pix"
-                    style={{ width: 220, height: 220, margin: "0 auto 16px", borderRadius: 8 }}
-                  />
-                )}
-                <textarea className="lith-input" readOnly rows={3} value={pix.qrCode} onClick={(e) => (e.target as HTMLTextAreaElement).select()} />
-              </div>
-            )}
-
-            {step === "done" && <p>Pagamento em processamento. Você receberá a confirmação por e-mail.</p>}
+      {step === "email" && (
+        <form onSubmit={startCheckout}>
+          <div className="lith-form-group">
+            <input
+              className="lith-input"
+              type="email"
+              placeholder="Seu e-mail *"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
+          {error && <p className="lith-admin-error" style={{ marginBottom: 16 }}>{error}</p>}
+          <button className="lith-btn lith-btn--primary lith-btn--block" type="submit" disabled={loading}>
+            {loading ? "Preparando..." : "Continuar"}
+          </button>
+        </form>
+      )}
+
+      {step === "brick" && preferenceId && (
+        <>
+          {error && <p className="lith-admin-error" style={{ marginBottom: 16 }}>{error}</p>}
+          <Payment
+            initialization={{ amount: total, preferenceId }}
+            onSubmit={handleBrickSubmit}
+            onError={() => setError("Erro ao processar o pagamento.")}
+            customization={{
+              paymentMethods: {
+                creditCard: "all",
+                bankTransfer: "all",
+                maxInstallments: 3,
+              },
+            }}
+          />
+        </>
+      )}
+
+      {step === "pix" && pix && (
+        <div style={{ textAlign: "center" }}>
+          <p style={{ marginBottom: 16 }}>Escaneie o QR Code ou copie o código Pix abaixo:</p>
+          {pix.qrCodeBase64 && (
+            <img
+              src={`data:image/png;base64,${pix.qrCodeBase64}`}
+              alt="QR Code Pix"
+              style={{ width: 220, height: 220, margin: "0 auto 16px", borderRadius: 8 }}
+            />
+          )}
+          <textarea
+            className="lith-input"
+            readOnly
+            rows={3}
+            value={pix.qrCode}
+            onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+          />
         </div>
-      </div>
+      )}
+
+      {step === "done" && <p>Pagamento em processamento. Você receberá a confirmação por e-mail.</p>}
     </div>
   );
 }

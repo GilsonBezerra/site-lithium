@@ -1,12 +1,7 @@
-"use client";
-
-import { useState } from "react";
+import Link from "next/link";
 import type { Work } from "@/lib/content";
-import Lightbox from "./Lightbox";
 
 export default function Portfolio({ works }: { works: Work[] }) {
-  const [selected, setSelected] = useState<Work | null>(null);
-
   return (
     <section className="lith-section lith-section--alt" id="portfolio">
       <div className="lith-container">
@@ -17,12 +12,7 @@ export default function Portfolio({ works }: { works: Work[] }) {
         </div>
         <div className="lith-grid lith-grid--3">
           {works.map((work) => (
-            <button
-              type="button"
-              className="lith-portfolio-item"
-              key={work.id}
-              onClick={() => setSelected(work)}
-            >
+            <Link href={`/obras/${work.id}`} className="lith-portfolio-item" key={work.id}>
               <img className="lith-portfolio-item__img" src={work.thumbnail} alt={`Capa de ${work.title}`} />
               <div className="lith-portfolio-item__overlay">
                 <i className="fas fa-plus"></i>
@@ -32,11 +22,10 @@ export default function Portfolio({ works }: { works: Work[] }) {
                 <h4>{work.title}</h4>
                 <p>{work.status}</p>
               </div>
-            </button>
+            </Link>
           ))}
         </div>
       </div>
-      {selected && <Lightbox work={selected} onClose={() => setSelected(null)} />}
     </section>
   );
 }

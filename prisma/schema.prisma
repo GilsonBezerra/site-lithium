@@ -42,7 +42,7 @@ model Work {
   featured    Boolean      @default(false)
   order       Int          @default(0)
   credits     WorkCredit[]
-  orders      Order[]
+  orderItems  OrderItem[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 
@@ -61,19 +61,31 @@ model WorkCredit {
 
 model Order {
   id             String         @id @default(cuid())
-  workId         String
-  work           Work           @relation(fields: [workId], references: [id])
   status         OrderStatus    @default(PENDING)
   paymentMethod  PaymentMethod?
   mpPreferenceId String?
   mpPaymentId    String?
   payerEmail     String
   amount         Decimal        @db.Decimal(10, 2)
+  items          OrderItem[]
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
-  @@index([workId])
   @@index([status])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  workId    String
+  work      Work    @relation(fields: [workId], references: [id])
+  title     String
+  unitPrice Decimal @db.Decimal(10, 2)
+  quantity  Int     @default(1)
+
+  @@index([orderId])
+  @@index([workId])
 }
 
 model TeamMember {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import CartButton from "./CartButton";
 
 const LINKS = [
   { href: "/#page-top", label: "Início" },
@@ -32,18 +33,24 @@ export default function Nav() {
             Lithium<em>Entertainment</em>
           </span>
         </Link>
-        <button
-          className={`lith-nav__toggle${open ? " lith-nav__toggle--open" : ""}`}
-          type="button"
-          aria-controls="navbarResponsive"
-          aria-expanded={open}
-          aria-label="Abrir menu"
-          onClick={() => setOpen((v) => !v)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        <div className="lith-nav__actions">
+          <Link href="/admin/login" className="lith-cart-button" aria-label="Entrar no painel admin">
+            <i className="fas fa-lock"></i>
+          </Link>
+          <CartButton />
+          <button
+            className={`lith-nav__toggle${open ? " lith-nav__toggle--open" : ""}`}
+            type="button"
+            aria-controls="navbarResponsive"
+            aria-expanded={open}
+            aria-label="Abrir menu"
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
         <div className={`lith-nav__menu${open ? " lith-nav__menu--open" : ""}`} id="navbarResponsive">
           <ul className="lith-nav__links">
             {LINKS.map((link) => (
@@ -53,12 +60,6 @@ export default function Nav() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link href="/admin/login" onClick={() => setOpen(false)} aria-label="Entrar no painel admin">
-                <i className="fas fa-lock" style={{ marginRight: 6 }}></i>
-                Admin
-              </Link>
-            </li>
             <li>
               <Link className="lith-nav__cta" href="/#contact" onClick={() => setOpen(false)}>
                 Fale conosco

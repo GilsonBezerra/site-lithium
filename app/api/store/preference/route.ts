@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { Preference } from "mercadopago";
 import { mpClient } from "@/lib/mercadopago";
 import { prisma } from "@/lib/prisma";
-import { PAYMENT_ENABLED, PIX_ENABLED } from "@/lib/payment-config";
+import { PAYMENT_ENABLED, PIX_ENABLED, isBuyable } from "@/lib/payment-config";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
+type CartLine = { workId: string; quantity: number };
 
 // Cria a Preference que o Payment Brick usa para inicializar (Pix + cartão).
 export async function POST(req: NextRequest) {
@@ -14,39 +16,57 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json().catch(() => null);
-  const { workId, payerEmail } = body || {};
+  const { items, payerEmail } = (body || {}) as { items?: CartLine[]; payerEmail?: string };
 
-  if (!workId || !payerEmail || !EMAIL_RE.test(payerEmail)) {
-    return NextResponse.json({ error: "workId e payerEmail (válido) são obrigatórios." }, { status: 400 });
+  if (!items || !Array.isArray(items) || items.length === 0 || !payerEmail || !EMAIL_RE.test(payerEmail)) {
+    return NextResponse.json({ error: "items e payerEmail (válido) são obrigatórios." }, { status: 400 });
   }
 
-  const work = await prisma.work.findUnique({ where: { id: workId } });
-  if (!work || !work.saleEnabled || !work.price) {
-    return NextResponse.json({ error: "Esta obra não está disponível para venda." }, { status: 404 });
+  const works = await prisma.work.findMany({ where: { id: { in: items.map((i) => i.workId) } } });
+  const workById = new Map(works.map((w) => [w.id, w]));
+
+  const lines: { work: (typeof works)[number]; quantity: number }[] = [];
+  for (const item of items) {
+    const work = workById.get(item.workId);
+    const quantity = Math.max(1, Math.floor(Number(item.quantity) || 1));
+    if (!work || !isBuyable(work)) {
+      return NextResponse.json({ error: `A obra "${work?.title ?? item.workId}" não está disponível para venda.` }, { status: 404 });
+    }
+    lines.push({ work, quantity });
   }
 
-  const amount = Number(work.price);
+  const amount = lines.reduce((sum, l) => sum + Number(l.work.price) * l.quantity, 0);
 
   const order = await prisma.order.create({
-    data: { workId: work.id, payerEmail, amount, status: "PENDING" },
+    data: {
+      payerEmail,
+      amount,
+      status: "PENDING",
+      items: {
+        create: lines.map((l) => ({
+          workId: l.work.id,
+          title: l.work.title,
+          unitPrice: l.work.price!,
+          quantity: l.quantity,
+        })),
+      },
+    },
   });
 
   try {
     const preference = new Preference(mpClient);
     const result = await preference.create({
       body: {
-        items: [
-          {
-            id: work.id,
-            title: work.title,
-            description: `${work.title} — Lithium Entertainment`,
-            quantity: 1,
-            unit_price: amount,
-            currency_id: "BRL",
-          },
-        ],
+        items: lines.map((l) => ({
+          id: l.work.id,
+          title: l.work.title,
+          description: `${l.work.title} — Lithium Entertainment`,
+          quantity: l.quantity,
+          unit_price: Number(l.work.price),
+          currency_id: "BRL",
+        })),
         payer: { email: payerEmail },
-        metadata: { order_id: order.id, work_id: work.id },
+        metadata: { order_id: order.id },
         external_reference: order.id,
         payment_methods: {
           excluded_payment_types: [{ id: "ticket" }],

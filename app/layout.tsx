@@ -1,4 +1,6 @@
 import "../css/main.css";
+import { CartProvider } from "@/lib/cart-context";
+import CartDrawer from "@/components/CartDrawer";
 
 export const metadata = {
   title: "Lithium Entertainment — A Casa da Fantasia",
@@ -20,7 +22,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css" />
       </head>
-      <body id="page-top">{children}</body>
+      <body id="page-top">
+        <CartProvider>
+          {children}
+          <CartDrawer />
+        </CartProvider>
+      </body>
     </html>
   );
 }

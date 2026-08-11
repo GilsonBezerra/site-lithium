@@ -18,10 +18,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Dados de pagamento incompletos." }, { status: 400 });
   }
 
-  const order = await prisma.order.findUnique({ where: { id: orderId }, include: { work: true } });
+  const order = await prisma.order.findUnique({ where: { id: orderId }, include: { items: true } });
   if (!order || order.status !== "PENDING") {
     return NextResponse.json({ error: "Pedido não encontrado ou já processado." }, { status: 404 });
   }
+
+  const description =
+    order.items.length === 1
+      ? order.items[0].title
+      : `Pedido Lithium Entertainment (${order.items.length} itens)`;
 
   const payment = new Payment(mpClient);
 
@@ -33,7 +38,7 @@ export async function POST(req: NextRequest) {
     const result = await payment.create({
       body: {
         transaction_amount: Number(order.amount),
-        description: order.work.title,
+        description,
         payment_method_id: "pix",
         payer: { email: payerEmail },
         metadata: { order_id: order.id },
@@ -64,7 +69,7 @@ export async function POST(req: NextRequest) {
     body: {
       transaction_amount: Number(order.amount),
       token,
-      description: order.work.title,
+      description,
       installments: installments || 1,
       payment_method_id: paymentMethodId,
       issuer_id: issuerId,

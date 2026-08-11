@@ -11,7 +11,7 @@ const STATUS_LABEL: Record<string, string> = {
 
 export default async function PedidosPage() {
   const orders = await prisma.order.findMany({
-    include: { work: true },
+    include: { items: true },
     orderBy: { createdAt: "desc" },
     take: 100,
   });
@@ -25,7 +25,9 @@ export default async function PedidosPage() {
         {orders.map((order) => (
           <div className="lith-admin-row" key={order.id}>
             <div className="lith-admin-row__body">
-              <p className="lith-admin-row__title">{order.work.title}</p>
+              <p className="lith-admin-row__title">
+                {order.items.map((item) => `${item.title}${item.quantity > 1 ? ` ×${item.quantity}` : ""}`).join(", ")}
+              </p>
               <p className="lith-admin-row__meta">
                 {order.payerEmail} · R$ {String(order.amount)} · {new Date(order.createdAt).toLocaleString("pt-BR")}
               </p>
