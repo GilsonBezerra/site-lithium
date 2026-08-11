@@ -2,8 +2,17 @@
 
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
+import ReserveButton from "./ReserveButton";
 
-type Work = { id: string; title: string; coverImage: string; price: string | number; tag: string; buyable: boolean };
+type Work = {
+  id: string;
+  title: string;
+  coverImage: string;
+  price: string | number;
+  tag: string;
+  buyable: boolean;
+  reservable: boolean;
+};
 
 export default function StoreGrid({ works }: { works: Work[] }) {
   const cart = useCart();
@@ -31,20 +40,27 @@ export default function StoreGrid({ works }: { works: Work[] }) {
             <p style={{ color: "var(--text)", fontWeight: 700, marginBottom: 16 }}>
               R$ {Number(work.price).toFixed(2).replace(".", ",")}
             </p>
-            <button
-              className="lith-btn lith-btn--primary lith-btn--block"
-              disabled={!work.buyable}
-              onClick={() =>
-                cart.addItem({
-                  workId: work.id,
-                  title: work.title,
-                  coverImage: work.coverImage,
-                  price: Number(work.price),
-                })
-              }
-            >
-              {work.buyable ? "Adicionar ao carrinho" : "Em breve"}
-            </button>
+            {work.buyable ? (
+              <button
+                className="lith-btn lith-btn--primary lith-btn--block"
+                onClick={() =>
+                  cart.addItem({
+                    workId: work.id,
+                    title: work.title,
+                    coverImage: work.coverImage,
+                    price: Number(work.price),
+                  })
+                }
+              >
+                Adicionar ao carrinho
+              </button>
+            ) : work.reservable ? (
+              <ReserveButton workId={work.id} block />
+            ) : (
+              <button className="lith-btn lith-btn--primary lith-btn--block" disabled>
+                Em breve
+              </button>
+            )}
           </div>
         </article>
       ))}

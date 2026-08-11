@@ -1,7 +1,14 @@
 export const PIX_ENABLED = process.env.NEXT_PUBLIC_PIX_ENABLED === "true";
 
-// Uma obra fica comprável assim que o admin marca "disponível para venda"
-// e define um preço — não depende de nenhuma flag global.
-export function isBuyable(work: { saleEnabled: boolean; price: unknown }): boolean {
-  return work.saleEnabled && work.price != null;
+type SaleableWork = { saleEnabled: boolean; price: unknown; status: string };
+
+// Pronta pra comprar agora (paga na hora, via Pix/cartão).
+export function isBuyable(work: SaleableWork): boolean {
+  return work.saleEnabled && work.price != null && work.status === "AVAILABLE";
+}
+
+// Ainda em produção, mas o cliente pode deixar o e-mail pra ser avisado
+// quando ficar disponível (sem cobrar nada agora).
+export function isReservable(work: SaleableWork): boolean {
+  return work.saleEnabled && work.price != null && work.status === "IN_DEVELOPMENT";
 }

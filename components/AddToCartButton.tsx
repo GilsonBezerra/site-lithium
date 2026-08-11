@@ -4,13 +4,12 @@ import { useCart } from "@/lib/cart-context";
 
 type Work = { id: string; title: string; coverImage: string; price: string | number };
 
-export default function AddToCartButton({ work, buyable }: { work: Work; buyable: boolean }) {
+export default function AddToCartButton({ work }: { work: Work }) {
   const cart = useCart();
 
   return (
     <button
       className="lith-btn lith-btn--primary"
-      disabled={!buyable}
       onClick={() =>
         cart.addItem({
           workId: work.id,
@@ -20,7 +19,7 @@ export default function AddToCartButton({ work, buyable }: { work: Work; buyable
         })
       }
     >
-      {buyable ? "Adicionar ao carrinho" : "Em breve"}
+      Adicionar ao carrinho
     </button>
   );
 }

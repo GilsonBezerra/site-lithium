@@ -41,10 +41,11 @@ model Work {
   saleEnabled Boolean      @default(false)
   featured    Boolean      @default(false)
   order       Int          @default(0)
-  credits     WorkCredit[]
-  orderItems  OrderItem[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  credits      WorkCredit[]
+  orderItems   OrderItem[]
+  reservations Reservation[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 
   @@index([type])
   @@index([featured])
@@ -106,6 +107,17 @@ model TimelineEntry {
   description String?
   isCta       Boolean @default(false)
   order       Int     @default(0)
+}
+
+model Reservation {
+  id        String   @id @default(cuid())
+  workId    String
+  work      Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
+  email     String
+  createdAt DateTime @default(now())
+
+  @@unique([workId, email])
+  @@index([workId])
 }
 
 model Admin {

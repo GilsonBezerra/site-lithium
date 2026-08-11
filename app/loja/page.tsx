@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import StoreGrid from "@/components/StoreGrid";
 import { prisma } from "@/lib/prisma";
 import { WORK_TYPE_LABEL } from "@/lib/labels";
-import { isBuyable } from "@/lib/payment-config";
+import { isBuyable, isReservable } from "@/lib/payment-config";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +35,7 @@ export default async function LojaPage() {
               price: String(w.price),
               tag: WORK_TYPE_LABEL[w.type] ?? w.type,
               buyable: isBuyable(w),
+              reservable: isReservable(w),
             }))}
           />
         </div>

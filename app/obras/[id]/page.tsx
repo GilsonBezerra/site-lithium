@@ -2,9 +2,10 @@ import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AddToCartButton from "@/components/AddToCartButton";
+import ReserveButton from "@/components/ReserveButton";
 import { prisma } from "@/lib/prisma";
 import { WORK_TYPE_LABEL, WORK_STATUS_LABEL } from "@/lib/labels";
-import { isBuyable } from "@/lib/payment-config";
+import { isBuyable, isReservable } from "@/lib/payment-config";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,7 @@ export default async function ObraPage({ params }: { params: { id: string } }) {
 
   const forSale = work.saleEnabled && work.price != null;
   const buyable = isBuyable(work);
+  const reservable = isReservable(work);
 
   return (
     <>
@@ -49,10 +51,17 @@ export default async function ObraPage({ params }: { params: { id: string } }) {
               {forSale && (
                 <div className="lith-obra__buy">
                   <span>R$ {Number(work.price).toFixed(2).replace(".", ",")}</span>
-                  <AddToCartButton
-                    work={{ id: work.id, title: work.title, coverImage: work.coverImage, price: String(work.price) }}
-                    buyable={buyable}
-                  />
+                  {buyable ? (
+                    <AddToCartButton
+                      work={{ id: work.id, title: work.title, coverImage: work.coverImage, price: String(work.price) }}
+                    />
+                  ) : reservable ? (
+                    <ReserveButton workId={work.id} />
+                  ) : (
+                    <button className="lith-btn lith-btn--primary" disabled>
+                      Em breve
+                    </button>
+                  )}
                 </div>
               )}
             </div>
