@@ -31,6 +31,9 @@ export async function POST(req: NextRequest) {
   if (status && !STATUSES.includes(status)) {
     return NextResponse.json({ error: "status inválido" }, { status: 400 });
   }
+  if (saleEnabled && !price) {
+    return NextResponse.json({ error: "Informe o preço para colocar a obra à venda" }, { status: 400 });
+  }
 
   const work = await prisma.work.create({
     data: {

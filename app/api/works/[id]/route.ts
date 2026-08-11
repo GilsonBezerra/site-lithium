@@ -25,6 +25,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   const body = await req.json();
   const { title, type, status, description, coverImage, price, saleEnabled, featured, order, credits } = body;
 
+  if (saleEnabled && !price) {
+    return NextResponse.json({ error: "Informe o preço para colocar a obra à venda" }, { status: 400 });
+  }
+
   const work = await prisma.$transaction(async (tx) => {
     if (credits) {
       await tx.workCredit.deleteMany({ where: { workId: params.id } });

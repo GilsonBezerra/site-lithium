@@ -12,6 +12,8 @@ export type Work = {
   fullImage: string;
   description: string;
   credits: Credit[];
+  forSale: boolean;
+  price: string | null;
 };
 
 export type TeamMember = {

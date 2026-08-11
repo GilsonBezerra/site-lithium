@@ -32,6 +32,8 @@ export default async function HomePage() {
     fullImage: w.coverImage,
     description: w.description ?? "",
     credits: w.credits.map((c) => ({ role: c.role, name: c.name })),
+    forSale: w.saleEnabled && w.price != null,
+    price: w.price != null ? String(w.price) : null,
   }));
 
   const team: TeamMember[] = dbTeam.map((m) => ({ id: m.id, name: m.name, role: m.role, photo: m.photoUrl }));

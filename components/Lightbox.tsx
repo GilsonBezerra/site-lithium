@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 import type { Work } from "@/lib/content";
 
 export default function Lightbox({ work, onClose }: { work: Work; onClose: () => void }) {
@@ -35,6 +36,14 @@ export default function Lightbox({ work, onClose }: { work: Work; onClose: () =>
                 </li>
               ))}
             </ul>
+            {work.forSale && (
+              <div className="lith-modal__buy">
+                <span>R$ {Number(work.price).toFixed(2).replace(".", ",")}</span>
+                <Link href="/loja" className="lith-btn lith-btn--primary lith-btn--sm">
+                  Comprar na loja
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

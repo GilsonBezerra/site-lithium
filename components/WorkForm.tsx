@@ -68,6 +68,10 @@ export default function WorkForm({ workId, initial }: { workId?: string; initial
       setError("Informe o título.");
       return;
     }
+    if (values.saleEnabled && !values.price.trim()) {
+      setError("Informe o preço — sem preço a obra fica marcada como à venda mas não aparece na loja.");
+      return;
+    }
 
     setLoading(true);
     try {
@@ -186,11 +190,12 @@ export default function WorkForm({ workId, initial }: { workId?: string; initial
 
       {values.saleEnabled && (
         <div>
-          <label htmlFor="price">Preço (R$)</label>
+          <label htmlFor="price">Preço (R$) — obrigatório pra aparecer na loja</label>
           <input
             id="price"
             className="lith-input"
             placeholder="49.90"
+            required
             value={values.price}
             onChange={(e) => update("price", e.target.value)}
           />
