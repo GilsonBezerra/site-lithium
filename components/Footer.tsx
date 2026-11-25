@@ -7,11 +7,6 @@ export default function Footer() {
         </span>
         <ul className="lith-social">
           <li>
-            <a href="#" aria-label="Twitter">
-              <i className="fab fa-twitter"></i>
-            </a>
-          </li>
-          <li>
             <a href="https://www.facebook.com/lithiumcomics/" aria-label="Facebook">
               <i className="fab fa-facebook-f"></i>
             </a>
@@ -20,14 +15,6 @@ export default function Footer() {
             <a href="https://www.instagram.com/lithiumcomics/?hl=pt-br" aria-label="Instagram">
               <i className="fab fa-instagram"></i>
             </a>
-          </li>
-        </ul>
-        <ul className="lith-footer__links">
-          <li>
-            <a href="#">Política de Privacidade</a>
-          </li>
-          <li>
-            <a href="#">Termos de Uso</a>
           </li>
         </ul>
       </div>

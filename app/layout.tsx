@@ -2,7 +2,19 @@ import "../css/main.css";
 import { CartProvider } from "@/lib/cart-context";
 import CartDrawer from "@/components/CartDrawer";
 
+import { SITE_URL } from "@/lib/site";
+
 export const metadata = {
+  metadataBase: new URL(SITE_URL),
+  openGraph: {
+    title: "Lithium Entertainment — A Casa da Fantasia",
+    description: "Estúdio brasileiro de quadrinhos, literatura e jogos de tabuleiro.",
+    images: ["/img/og-lancamentos.jpg"],
+    url: "/",
+    siteName: "Lithium Entertainment",
+    locale: "pt_BR",
+  },
+  twitter: { card: "summary_large_image" },
   title: "Lithium Entertainment — A Casa da Fantasia",
   description:
     "Lithium Entertainment — estúdio brasileiro de quadrinhos, literatura e jogos de tabuleiro. A Casa da Fantasia.",

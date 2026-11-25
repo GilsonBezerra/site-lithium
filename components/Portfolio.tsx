@@ -17,7 +17,11 @@ export default function Portfolio({ works }: { works: Work[] }) {
               <div className="lith-portfolio-item__overlay">
                 <i className="fas fa-plus"></i>
               </div>
-              {work.forSale && <span className="lith-portfolio-item__badge">À venda</span>}
+              {work.comingSoon ? (
+                <span className="lith-portfolio-item__badge">Em breve</span>
+              ) : work.forSale ? (
+                <span className="lith-portfolio-item__badge">À venda</span>
+              ) : null}
               <div className="lith-portfolio-item__caption">
                 <h4>{work.title}</h4>
                 <p>{work.status}</p>

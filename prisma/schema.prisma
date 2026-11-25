@@ -15,6 +15,7 @@ enum WorkType {
 
 enum WorkStatus {
   IN_DEVELOPMENT
+  COMING_SOON
   AVAILABLE
 }
 
@@ -38,6 +39,8 @@ model Work {
   description String?
   coverImage  String
   price       Decimal?     @db.Decimal(10, 2)
+  kindleUrl   String?
+  printUrl    String?
   saleEnabled Boolean      @default(false)
   featured    Boolean      @default(false)
   order       Int          @default(0)

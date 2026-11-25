@@ -28,6 +28,8 @@ export default async function EditWorkPage({ params }: { params: { id: string } 
           description: work.description || "",
           coverImage: work.coverImage,
           price: work.price ? String(work.price) : "",
+          kindleUrl: work.kindleUrl || "",
+          printUrl: work.printUrl || "",
           saleEnabled: work.saleEnabled,
           featured: work.featured,
           credits: work.credits.length ? work.credits.map((c) => ({ role: c.role, name: c.name })) : [{ role: "Roteiro", name: "" }],

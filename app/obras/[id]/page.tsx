@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import AmazonLinks from "@/components/AmazonLinks";
 import AddToCartButton from "@/components/AddToCartButton";
 import ReserveButton from "@/components/ReserveButton";
 import { prisma } from "@/lib/prisma";
@@ -8,6 +9,25 @@ import { WORK_TYPE_LABEL, WORK_STATUS_LABEL } from "@/lib/labels";
 import { isBuyable, isReservable } from "@/lib/payment-config";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const work = await prisma.work.findUnique({ where: { id: params.id } });
+  if (!work) return {};
+  const title = `${work.title} — Lithium Entertainment`;
+  const description = work.description?.replace(/\s+/g, " ").slice(0, 160);
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: [work.coverImage],
+      url: `/obras/${work.id}`,
+      siteName: "Lithium Entertainment",
+      locale: "pt_BR",
+    },
+  };
+}
 
 export default async function ObraPage({ params }: { params: { id: string } }) {
   const work = await prisma.work.findUnique({
@@ -36,7 +56,7 @@ export default async function ObraPage({ params }: { params: { id: string } }) {
               <p className="lith-lede" style={{ margin: "12px 0 0" }}>
                 {WORK_STATUS_LABEL[work.status] ?? work.status}
               </p>
-              {work.description && <p style={{ marginTop: 20, color: "var(--text-muted)" }}>{work.description}</p>}
+              {work.description && <p style={{ marginTop: 20, color: "var(--text-muted)", whiteSpace: "pre-line" }}>{work.description}</p>}
 
               {work.credits.length > 0 && (
                 <ul className="lith-modal__credits" style={{ marginTop: 24 }}>
@@ -48,6 +68,14 @@ export default async function ObraPage({ params }: { params: { id: string } }) {
                 </ul>
               )}
 
+              {!forSale && reservable && (
+                <div className="lith-obra__buy">
+                  <ReserveButton workId={work.id} label="Avise-me" />
+                </div>
+              )}
+              {work.status === "AVAILABLE" && (
+                <AmazonLinks title={work.title} kindleUrl={work.kindleUrl} printUrl={work.printUrl} />
+              )}
               {forSale && (
                 <div className="lith-obra__buy">
                   <span>R$ {Number(work.price).toFixed(2).replace(".", ",")}</span>

@@ -10,10 +10,12 @@ type Credit = { role: string; name: string };
 type WorkFormValues = {
   title: string;
   type: "COMIC" | "BOOK" | "GAME";
-  status: "IN_DEVELOPMENT" | "AVAILABLE";
+  status: "IN_DEVELOPMENT" | "COMING_SOON" | "AVAILABLE";
   description: string;
   coverImage: string;
   price: string;
+  kindleUrl: string;
+  printUrl: string;
   saleEnabled: boolean;
   featured: boolean;
   credits: Credit[];
@@ -26,6 +28,8 @@ const EMPTY: WorkFormValues = {
   description: "",
   coverImage: "",
   price: "",
+  kindleUrl: "",
+  printUrl: "",
   saleEnabled: false,
   featured: false,
   credits: [{ role: "Roteiro", name: "" }],
@@ -145,6 +149,7 @@ export default function WorkForm({ workId, initial }: { workId?: string; initial
         <label htmlFor="status">Status</label>
         <select id="status" className="lith-input" value={values.status} onChange={(e) => update("status", e.target.value as WorkFormValues["status"])}>
           <option value="IN_DEVELOPMENT">Em desenvolvimento</option>
+          <option value="COMING_SOON">Em breve</option>
           <option value="AVAILABLE">Disponível</option>
         </select>
       </div>
@@ -154,9 +159,33 @@ export default function WorkForm({ workId, initial }: { workId?: string; initial
         <textarea
           id="description"
           className="lith-input"
-          rows={4}
+          rows={8}
           value={values.description}
           onChange={(e) => update("description", e.target.value)}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="kindleUrl">Link Kindle (Amazon)</label>
+        <input
+          id="kindleUrl"
+          type="url"
+          className="lith-input"
+          placeholder="https://www.amazon.com.br/dp/..."
+          value={values.kindleUrl}
+          onChange={(e) => update("kindleUrl", e.target.value)}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="printUrl">Link do impresso (Amazon)</label>
+        <input
+          id="printUrl"
+          type="url"
+          className="lith-input"
+          placeholder="https://www.amazon.com.br/dp/..."
+          value={values.printUrl}
+          onChange={(e) => update("printUrl", e.target.value)}
         />
       </div>
 
@@ -193,7 +222,7 @@ export default function WorkForm({ workId, initial }: { workId?: string; initial
 
       <label className="lith-admin-form__checkbox">
         <input type="checkbox" checked={values.saleEnabled} onChange={(e) => update("saleEnabled", e.target.checked)} />
-        Disponível para venda na loja
+        Vender pelo carrinho do site (não marque e-book do KDP Select)
       </label>
 
       {values.saleEnabled && (

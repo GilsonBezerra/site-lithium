@@ -2,13 +2,16 @@
 
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
+import AmazonLinks from "./AmazonLinks";
 import ReserveButton from "./ReserveButton";
 
 type Work = {
   id: string;
   title: string;
   coverImage: string;
-  price: string | number;
+  price: string | number | null;
+  kindleUrl: string | null;
+  printUrl: string | null;
   tag: string;
   buyable: boolean;
   reservable: boolean;
@@ -29,7 +32,7 @@ export default function StoreGrid({ works }: { works: Work[] }) {
             <img
               src={work.coverImage}
               alt={work.title}
-              style={{ width: "100%", aspectRatio: "4 / 5", objectFit: "cover" }}
+              style={{ width: "100%", aspectRatio: "4 / 5", objectFit: "contain", background: "#0a0a0f" }}
             />
           </Link>
           <div style={{ padding: 24 }}>
@@ -37,9 +40,11 @@ export default function StoreGrid({ works }: { works: Work[] }) {
             <Link href={`/obras/${work.id}`}>
               <h3 className="lith-card__title" style={{ marginBottom: 10 }}>{work.title}</h3>
             </Link>
-            <p style={{ color: "var(--text)", fontWeight: 700, marginBottom: 16 }}>
-              R$ {Number(work.price).toFixed(2).replace(".", ",")}
-            </p>
+            {work.price != null && (
+              <p style={{ color: "var(--text)", fontWeight: 700, marginBottom: 16 }}>
+                R$ {Number(work.price).toFixed(2).replace(".", ",")}
+              </p>
+            )}
             {work.buyable ? (
               <button
                 className="lith-btn lith-btn--primary lith-btn--block"
@@ -56,11 +61,12 @@ export default function StoreGrid({ works }: { works: Work[] }) {
               </button>
             ) : work.reservable ? (
               <ReserveButton workId={work.id} block />
-            ) : (
+            ) : work.kindleUrl || work.printUrl ? null : (
               <button className="lith-btn lith-btn--primary lith-btn--block" disabled>
                 Em breve
               </button>
             )}
+            <AmazonLinks title={work.title} kindleUrl={work.kindleUrl} printUrl={work.printUrl} block />
           </div>
         </article>
       ))}

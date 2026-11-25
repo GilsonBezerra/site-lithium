@@ -3,9 +3,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { parsePrice } from "@/lib/price";
+import { parseAmazonUrl } from "@/lib/amazon";
 
 const TYPES = ["COMIC", "BOOK", "GAME"];
-const STATUSES = ["IN_DEVELOPMENT", "AVAILABLE"];
+const STATUSES = ["IN_DEVELOPMENT", "COMING_SOON", "AVAILABLE"];
 
 // GET pública — alimenta o portfólio/loja do site
 export async function GET() {
@@ -32,6 +33,11 @@ export async function POST(req: NextRequest) {
   if (status && !STATUSES.includes(status)) {
     return NextResponse.json({ error: "status inválido" }, { status: 400 });
   }
+  const kindle = parseAmazonUrl(body.kindleUrl);
+  const print = parseAmazonUrl(body.printUrl);
+  if (!kindle.ok || !print.ok) {
+    return NextResponse.json({ error: "Use um link https da Amazon." }, { status: 400 });
+  }
   const parsedPrice = parsePrice(price);
   if (saleEnabled && parsedPrice === null) {
     return NextResponse.json({ error: "Informe o preço para colocar a obra à venda" }, { status: 400 });
@@ -48,6 +54,8 @@ export async function POST(req: NextRequest) {
       description: description || null,
       coverImage,
       price: parsedPrice,
+      kindleUrl: kindle.url,
+      printUrl: print.url,
       saleEnabled: Boolean(saleEnabled),
       featured: Boolean(featured),
       credits: {

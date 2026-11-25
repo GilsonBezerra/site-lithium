@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { parsePrice } from "@/lib/price";
+import { parseAmazonUrl } from "@/lib/amazon";
 
 async function requireAdmin() {
   const session = await getServerSession(authOptions);
@@ -26,6 +27,11 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   const body = await req.json();
   const { title, type, status, description, coverImage, price, saleEnabled, featured, order, credits } = body;
 
+  const kindle = parseAmazonUrl(body.kindleUrl);
+  const print = parseAmazonUrl(body.printUrl);
+  if (!kindle.ok || !print.ok) {
+    return NextResponse.json({ error: "Use um link https da Amazon." }, { status: 400 });
+  }
   const parsedPrice = parsePrice(price);
   if (saleEnabled && parsedPrice === null) {
     return NextResponse.json({ error: "Informe o preço para colocar a obra à venda" }, { status: 400 });
@@ -47,6 +53,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         description: description || null,
         coverImage: coverImage || undefined,
         price: parsedPrice,
+        // ausente = mantém; vazio = apaga
+        kindleUrl: "kindleUrl" in body ? kindle.url : undefined,
+        printUrl: "printUrl" in body ? print.url : undefined,
         saleEnabled: Boolean(saleEnabled),
         featured: Boolean(featured),
         order: order ?? undefined,

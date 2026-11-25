@@ -10,5 +10,6 @@ export function isBuyable(work: SaleableWork): boolean {
 // Ainda em produção, mas o cliente pode deixar o e-mail pra ser avisado
 // quando ficar disponível (sem cobrar nada agora).
 export function isReservable(work: SaleableWork): boolean {
+  if (work.status === "COMING_SOON") return true;
   return work.saleEnabled && work.price != null && work.status === "IN_DEVELOPMENT";
 }

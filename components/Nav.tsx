@@ -5,7 +5,7 @@ import Link from "next/link";
 import CartButton from "./CartButton";
 
 const LINKS = [
-  { href: "/#page-top", label: "Início" },
+  { href: "/#lancamentos", label: "Lançamentos" },
   { href: "/#services", label: "O que fazemos" },
   { href: "/#portfolio", label: "Portfólio" },
   { href: "/#about", label: "Sobre nós" },

@@ -1459,13 +1459,13 @@ textarea.lith-input {
 .lith-carousel__slide {
   display: block;
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 2 / 3;
 }
 
 .lith-carousel__slide img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .lith-carousel__caption {
@@ -1551,5 +1551,189 @@ textarea.lith-input {
   .lith-hero__carousel {
     max-width: 100%;
     flex-basis: 100%;
+  }
+}
+
+/* ---- Lançamentos e Em breve ---- */
+
+section[id] {
+  scroll-margin-top: 60px;
+}
+
+.lith-launches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+}
+
+.lith-launch {
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+.lith-launch__cover img,
+.lith-soon__cover img {
+  width: 100%;
+  border-radius: 6px;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.25s ease;
+}
+
+.lith-launch__cover:hover img,
+.lith-soon__cover:hover img {
+  transform: translateY(-6px);
+}
+
+.lith-launch h3 {
+  color: #fff;
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+.lith-launch__author {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  margin: 8px 0 14px;
+}
+
+.lith-launch__text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.lith-launch__more {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.lith-amazon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.lith-soon {
+  background: radial-gradient(circle at 25% 50%, rgba(224, 112, 32, 0.28), transparent 55%), #0b0705;
+}
+
+.lith-soon__item {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.lith-soon__tag {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 1px solid #e0a850;
+  border-radius: 999px;
+  color: #f0c67a;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.lith-soon__text {
+  color: #cfc4b8;
+  white-space: pre-line;
+}
+
+@media (max-width: 991px) {
+  .lith-launches,
+  .lith-soon__item {
+    grid-template-columns: 1fr;
+  }
+
+  .lith-soon__item {
+    gap: 36px;
+  }
+
+  .lith-soon__cover {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .lith-launch {
+    grid-template-columns: 1fr;
+  }
+
+  .lith-launch__cover {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+}
+
+/* ---- Capas inteiras ---- */
+
+.lith-portfolio-item {
+  aspect-ratio: 2 / 3;
+}
+
+.lith-carousel__slide {
+  aspect-ratio: auto;
+}
+
+.lith-carousel__slide img {
+  height: auto;
+  aspect-ratio: 2 / 3;
+  max-height: 62vh;
+}
+
+.lith-carousel__caption {
+  position: static;
+  background: var(--surface);
+}
+
+.lith-timeline {
+  list-style: none;
+}
+
+@media (max-width: 991px) {
+  .lith-hero__inner {
+    padding-top: 120px;
+  }
+}
+
+/* O menu completo só cabe a partir de 1200px */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .lith-nav__toggle {
+    display: flex;
+  }
+
+  .lith-nav__menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: min(320px, 80vw);
+    background: var(--bg-alt);
+    border-left: 1px solid var(--border);
+    padding: 100px 32px 32px;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .lith-nav__menu--open {
+    transform: translateX(0);
+  }
+
+  .lith-nav__links {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

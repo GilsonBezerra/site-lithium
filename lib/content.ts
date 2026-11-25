@@ -15,6 +15,10 @@ export type Work = {
   forSale: boolean;
   price: string | null;
   featured: boolean;
+  comingSoon: boolean;
+  author: string | null;
+  kindleUrl: string | null;
+  printUrl: string | null;
 };
 
 export type TeamMember = {
@@ -22,6 +26,7 @@ export type TeamMember = {
   name: string;
   role: string;
   photo: string;
+  links: { label: string; icon: string; url: string }[];
 };
 
 export type TimelineEntry = {

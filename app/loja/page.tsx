@@ -13,7 +13,12 @@ export const metadata = {
 
 export default async function LojaPage() {
   const works = await prisma.work.findMany({
-    where: { saleEnabled: true, price: { not: null } },
+    where: {
+      OR: [
+        { saleEnabled: true, price: { not: null } },
+        { status: "AVAILABLE", OR: [{ kindleUrl: { not: null } }, { printUrl: { not: null } }] },
+      ],
+    },
     orderBy: [{ featured: "desc" }, { order: "asc" }],
   });
 
@@ -25,14 +30,16 @@ export default async function LojaPage() {
           <div className="lith-section__head">
             <span className="lith-eyebrow">Loja</span>
             <h2 className="lith-heading">Leve um pedaço do nosso universo</h2>
-            <p className="lith-lede">Quadrinhos, livros e jogos direto de quem produz — pagamento via Pix ou cartão.</p>
+            <p className="lith-lede">Quadrinhos direto de quem produz, com pagamento via Pix ou cartão. Os livros são vendidos na Amazon.</p>
           </div>
           <StoreGrid
             works={works.map((w) => ({
               id: w.id,
               title: w.title,
               coverImage: w.coverImage,
-              price: String(w.price),
+              price: w.saleEnabled && w.price != null ? String(w.price) : null,
+              kindleUrl: w.status === "AVAILABLE" ? w.kindleUrl : null,
+              printUrl: w.status === "AVAILABLE" ? w.printUrl : null,
               tag: WORK_TYPE_LABEL[w.type] ?? w.type,
               buyable: isBuyable(w),
               reservable: isReservable(w),

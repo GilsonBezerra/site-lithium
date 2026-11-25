@@ -7,7 +7,7 @@ export default function About({ timeline }: { timeline: TimelineEntry[] }) {
         <div className="lith-section__head">
           <span className="lith-eyebrow">Sobre nós</span>
           <h2 className="lith-heading">Nossa trajetória</h2>
-          <p className="lith-lede">Conteúdo em desenvolvimento — mas a história já começou há um tempo.</p>
+          <p className="lith-lede">Uma história que começou em 2011.</p>
         </div>
         <ol className="lith-timeline">
           {timeline.map((entry) =>

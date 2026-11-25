@@ -6,5 +6,6 @@ export const WORK_TYPE_LABEL: Record<string, string> = {
 
 export const WORK_STATUS_LABEL: Record<string, string> = {
   IN_DEVELOPMENT: "Em desenvolvimento",
+  COMING_SOON: "Em breve",
   AVAILABLE: "Disponível",
 };
