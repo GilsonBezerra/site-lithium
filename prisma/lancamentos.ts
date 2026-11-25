@@ -12,6 +12,7 @@ const LANCAMENTOS: Prisma.WorkCreateInput[] = [
     order: -30,
     coverImage: "/img/obras/contador-de-horas.jpg",
     kindleUrl: "https://www.amazon.com.br/dp/B0HSQ9L3KZ",
+    printUrl: "https://www.amazon.com/dp/B0HSQR6WLC",
     description: `Erlon só queria passar o Natal com a namorada. No sítio do avô, ele conta as horas para voltar. Então, no sótão, um relógio parado solta um canto de cuco. O sol no mostrador está apagado. E, por trás da madeira, alguém bate do outro lado.
 
 Ao atravessarem o relógio, Erlon, Lara e Heitor descobrem um mundo escondido entre raízes, onde besouros carregam bolachas e a água está prestes a dividir dois povos. Para voltar à ceia, os três precisam descobrir por que a passagem se abriu e por que o Jardim ainda fala do avô deles.`,
@@ -55,7 +56,22 @@ Livro um da trilogia As Crônicas de Havenarth.`,
   },
 ];
 
+// Só preenche onde a sinopse está vazia.
+const SINOPSES: Record<string, string> = {
+  Diesel:
+    "Quando Diesel é demitido do posto onde trabalhou por longos anos, a gerente do posto, e também sobrinha do dono, o convence a bolar um plano para roubarem a grana que seria coletada pela empresa de segurança. Tudo começa a desandar quando Diesel, apelido que Jaime ganhou por só trabalhar na bomba de diesel do posto, decide ir até a favela arrumar uma arma com um antigo amigo de escola.",
+  "A Estação das Almas":
+    "Três amigos acordam em lugares diferentes de uma cidade misteriosa e cheia de gente agindo estranho. Todos os medos que tinham se manifestam ali e tudo fica muito mais estranho quando o sinal da estação toca anunciando a chegada do trem. Todos correm e se abrigam fugindo dos apanhadores — estranhos seres que caçam pessoas e as levam para a estação onde embarcam para um destino desconhecido.",
+};
+
 async function main() {
+  for (const [title, description] of Object.entries(SINOPSES)) {
+    const r = await prisma.work.updateMany({
+      where: { title, OR: [{ description: null }, { description: "" }] },
+      data: { description },
+    });
+    console.log(`Sinopse de ${title}: ${r.count}`);
+  }
   for (const data of LANCAMENTOS) {
     const existing = await prisma.work.findFirst({ where: { title: data.title } });
     if (existing) {

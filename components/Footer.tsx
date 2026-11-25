@@ -7,12 +7,12 @@ export default function Footer() {
         </span>
         <ul className="lith-social">
           <li>
-            <a href="https://www.facebook.com/lithiumcomics/" aria-label="Facebook">
+            <a href="https://www.facebook.com/lithiumentertainment/" aria-label="Facebook">
               <i className="fab fa-facebook-f"></i>
             </a>
           </li>
           <li>
-            <a href="https://www.instagram.com/lithiumcomics/?hl=pt-br" aria-label="Instagram">
+            <a href="https://www.instagram.com/lithiumentertainment/" aria-label="Instagram">
               <i className="fab fa-instagram"></i>
             </a>
           </li>
