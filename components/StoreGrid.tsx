@@ -2,17 +2,20 @@
 
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
+import { formatPrice, tintClass } from "@/lib/shelf";
 import AmazonLinks from "./AmazonLinks";
 import ReserveButton from "./ReserveButton";
 
 type Work = {
   id: string;
   title: string;
+  author: string | null;
   coverImage: string;
   price: string | number | null;
   kindleUrl: string | null;
   printUrl: string | null;
   tag: string;
+  status: string;
   buyable: boolean;
   reservable: boolean;
 };
@@ -21,30 +24,29 @@ export default function StoreGrid({ works }: { works: Work[] }) {
   const cart = useCart();
 
   if (works.length === 0) {
-    return <p className="lith-lede" style={{ textAlign: "center" }}>Nenhuma obra à venda no momento — volte em breve.</p>;
+    return <p className="lith-empty">Nenhuma obra à venda no momento. Veja o que vem por aí no catálogo.</p>;
   }
 
   return (
-    <div className="lith-grid lith-grid--3">
-      {works.map((work) => (
-        <article className="lith-card" key={work.id} style={{ padding: 0, overflow: "hidden" }}>
-          <Link href={`/obras/${work.id}`}>
-            <img
-              src={work.coverImage}
-              alt={work.title}
-              style={{ width: "100%", aspectRatio: "4 / 5", objectFit: "contain", background: "#0a0a0f" }}
-            />
+    <div className="lith-shelf">
+      {works.map((work, i) => (
+        <article className="lith-book" key={work.id}>
+          <Link href={`/obras/${work.id}`} className={`lith-book__cover ${tintClass(i)}`} tabIndex={-1} aria-hidden="true">
+            <img src={work.coverImage} alt="" loading="lazy" />
           </Link>
-          <div style={{ padding: 24 }}>
-            <p className="lith-eyebrow" style={{ marginBottom: 6 }}>{work.tag}</p>
-            <Link href={`/obras/${work.id}`}>
-              <h3 className="lith-card__title" style={{ marginBottom: 10 }}>{work.title}</h3>
-            </Link>
-            {work.price != null && (
-              <p style={{ color: "var(--text)", fontWeight: 700, marginBottom: 16 }}>
-                R$ {Number(work.price).toFixed(2).replace(".", ",")}
+          {work.author && <p className="lith-book__author">{work.author}</p>}
+          <h2 className="lith-book__title">
+            <Link href={`/obras/${work.id}`}>{work.title}</Link>
+          </h2>
+          {work.price != null &&
+            (work.buyable ? (
+              <p className="lith-book__note lith-book__note--price">{formatPrice(work.price)}</p>
+            ) : (
+              <p className="lith-book__note">
+                {work.status}, {formatPrice(work.price)}
               </p>
-            )}
+            ))}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 14 }}>
             {work.buyable ? (
               <button
                 className="lith-btn lith-btn--primary lith-btn--block"
@@ -60,12 +62,8 @@ export default function StoreGrid({ works }: { works: Work[] }) {
                 Adicionar ao carrinho
               </button>
             ) : work.reservable ? (
-              <ReserveButton workId={work.id} block />
-            ) : work.kindleUrl || work.printUrl ? null : (
-              <button className="lith-btn lith-btn--primary lith-btn--block" disabled>
-                Em breve
-              </button>
-            )}
+              <ReserveButton workId={work.id} block label="Avise-me quando sair" />
+            ) : null}
             <AmazonLinks title={work.title} kindleUrl={work.kindleUrl} printUrl={work.printUrl} block />
           </div>
         </article>

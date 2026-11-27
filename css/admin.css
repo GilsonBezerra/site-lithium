@@ -1,0 +1,262 @@
+/* ==========================================================================
+   Área admin — mantém o tema escuro, isolado do site público
+   ========================================================================== */
+
+.lith-admin,
+.lith-admin__login {
+  --bg: #0a0a0f;
+  --bg-alt: #100f17;
+  --surface: #18161f;
+  --surface-2: #201d29;
+  --border: #2c2836;
+  --text: #f4f2f7;
+  --text-muted: #a7a2b3;
+  --violet: #8b5cf6;
+  --accent: #8b5cf6;
+  --accent-ink: #fff;
+  --rose: #f43f5e;
+  --amber: #facc15;
+  --radius: 14px;
+  --ink: #f4f2f7;
+  --graphite: #a7a2b3;
+  --paper: #100f17;
+  --mist: #201d29;
+  --rule: #2c2836;
+  --accent-deep: #7c4ddb;
+  --input-border: #2c2836;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.lith-admin h1, .lith-admin h2, .lith-admin h3, .lith-admin h4,
+.lith-admin__login h1, .lith-admin__login h2 {
+  color: var(--text);
+}
+
+   ========================================================================== */
+
+.lith-admin {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.lith-admin__login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.lith-admin__login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 32px;
+}
+
+.lith-admin__login-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.lith-admin__topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 28px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(10, 10, 15, 0.92);
+  backdrop-filter: blur(10px);
+}
+
+.lith-admin__nav {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  padding: 14px 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lith-admin__nav a {
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.lith-admin__nav a:hover,
+.lith-admin__nav a.active {
+  color: #fff;
+  background: var(--surface-2);
+}
+
+.lith-admin__main {
+  padding: 32px 28px 64px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.lith-admin__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.lith-admin__header h1 {
+  font-size: 1.8rem;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.lith-admin-list {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.lith-admin-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.lith-admin-row:last-child {
+  border-bottom: none;
+}
+
+.lith-admin-row__thumb {
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg-alt);
+}
+
+.lith-admin-row__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.lith-admin-row__title {
+  font-weight: 600;
+  color: #fff;
+}
+
+.lith-admin-row__meta {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.lith-admin-row__actions {
+  display: flex;
+  gap: 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.lith-admin-row__actions a {
+  color: var(--violet);
+}
+
+.lith-admin-row__actions button {
+  background: none;
+  border: none;
+  color: var(--rose);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  padding: 0;
+}
+
+.lith-admin-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.lith-admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 560px;
+}
+
+.lith-admin-form label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.lith-admin-form__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.lith-admin-form__checkbox input {
+  width: 18px;
+  height: 18px;
+}
+
+.lith-admin-credit-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.lith-admin-credit-row button {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--rose);
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.lith-admin-error {
+  color: var(--rose);
+  font-size: 0.85rem;
+}
+
+.lith-admin-status {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.lith-admin-status--pending { background: rgba(250, 204, 21, 0.15); color: var(--amber); }
+.lith-admin-status--approved { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+.lith-admin-status--rejected,
+.lith-admin-status--cancelled { background: rgba(244, 63, 94, 0.15); color: var(--rose); }
+

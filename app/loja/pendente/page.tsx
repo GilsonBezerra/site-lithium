@@ -6,7 +6,7 @@ export default function PendentePage() {
   return (
     <>
       <Nav />
-      <section className="lith-section" style={{ paddingTop: 160, textAlign: "center" }}>
+      <section className="lith-section" style={{ paddingTop: 72, textAlign: "center" }}>
         <div className="lith-container">
           <span className="lith-eyebrow">Pagamento em análise</span>
           <h2 className="lith-heading" style={{ marginBottom: 20 }}>Estamos confirmando seu pagamento</h2>

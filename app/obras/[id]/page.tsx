@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -7,6 +8,7 @@ import ReserveButton from "@/components/ReserveButton";
 import { prisma } from "@/lib/prisma";
 import { WORK_TYPE_LABEL, WORK_STATUS_LABEL } from "@/lib/labels";
 import { isBuyable, isReservable } from "@/lib/payment-config";
+import { formatPrice, signature } from "@/lib/shelf";
 
 export const dynamic = "force-dynamic";
 
@@ -40,62 +42,64 @@ export default async function ObraPage({ params }: { params: { id: string } }) {
   const forSale = work.saleEnabled && work.price != null;
   const buyable = isBuyable(work);
   const reservable = isReservable(work);
+  const onAmazon = work.status === "AVAILABLE" && Boolean(work.kindleUrl || work.printUrl);
+  const author = signature(work.credits);
+  const kind = WORK_TYPE_LABEL[work.type] ?? work.type;
 
   return (
     <>
       <Nav />
-      <section className="lith-section" style={{ paddingTop: 160 }}>
+      <main className="lith-page">
         <div className="lith-container">
+          <p className="lith-crumbs">
+            <Link href="/">Início</Link> / <Link href="/#catalogo">Catálogo</Link> / {work.title}
+          </p>
           <div className="lith-obra">
-            <div className="lith-obra__media">
-              <img src={work.coverImage} alt={work.title} />
+            <div className="lith-obra__media tint-1">
+              <img src={work.coverImage} alt={`Capa de ${work.title}`} />
             </div>
-            <div className="lith-obra__body">
-              <p className="lith-eyebrow">{WORK_TYPE_LABEL[work.type] ?? work.type}</p>
-              <h1 className="lith-heading">{work.title}</h1>
-              <p className="lith-lede" style={{ margin: "12px 0 0" }}>
-                {WORK_STATUS_LABEL[work.status] ?? work.status}
-              </p>
-              {work.description && <p style={{ marginTop: 20, color: "var(--text-muted)", whiteSpace: "pre-line" }}>{work.description}</p>}
+            <div>
+              <p className="lith-obra__kind">{kind}</p>
+              <h1 className="lith-obra__title">{work.title}</h1>
+              {author && <p className="lith-obra__author">{author}</p>}
 
-              {work.credits.length > 0 && (
-                <ul className="lith-modal__credits" style={{ marginTop: 24 }}>
-                  {work.credits.map((credit) => (
-                    <li key={credit.id}>
-                      {credit.role}: {credit.name}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              {!forSale && reservable && (
-                <div className="lith-obra__buy">
-                  <ReserveButton workId={work.id} label="Avise-me" />
-                </div>
-              )}
-              {work.status === "AVAILABLE" && (
-                <AmazonLinks title={work.title} kindleUrl={work.kindleUrl} printUrl={work.printUrl} />
-              )}
-              {forSale && (
-                <div className="lith-obra__buy">
-                  <span>R$ {Number(work.price).toFixed(2).replace(".", ",")}</span>
-                  {buyable ? (
+              <div className="lith-obra__buy">
+                {buyable && (
+                  <>
+                    <span className="lith-obra__price">{formatPrice(work.price)}</span>
                     <AddToCartButton
                       work={{ id: work.id, title: work.title, coverImage: work.coverImage, price: String(work.price) }}
                     />
-                  ) : reservable ? (
-                    <ReserveButton workId={work.id} />
-                  ) : (
-                    <button className="lith-btn lith-btn--primary" disabled>
-                      Em breve
-                    </button>
-                  )}
-                </div>
+                  </>
+                )}
+                {onAmazon && <AmazonLinks title={work.title} kindleUrl={work.kindleUrl} printUrl={work.printUrl} />}
+                {!buyable && !onAmazon && (
+                  <>
+                    <p className="lith-obra__status">
+                      {WORK_STATUS_LABEL[work.status] ?? work.status}
+                      {forSale && `, ${formatPrice(work.price)}`}
+                    </p>
+                    {reservable && <ReserveButton workId={work.id} label="Avise-me quando sair" />}
+                  </>
+                )}
+              </div>
+
+              {work.description && <p className="lith-obra__text">{work.description}</p>}
+
+              {work.credits.length > 0 && (
+                <dl className="lith-obra__credits">
+                  {work.credits.map((credit) => (
+                    <div key={credit.id} style={{ display: "contents" }}>
+                      <dt>{credit.role}</dt>
+                      <dd>{credit.name}</dd>
+                    </div>
+                  ))}
+                </dl>
               )}
             </div>
           </div>
         </div>
-      </section>
+      </main>
       <Footer />
     </>
   );

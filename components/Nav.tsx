@@ -1,49 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import CartButton from "./CartButton";
+import { Lockup } from "./Brand";
 
 const LINKS = [
   { href: "/#lancamentos", label: "Lançamentos" },
-  { href: "/#services", label: "O que fazemos" },
-  { href: "/#portfolio", label: "Portfólio" },
-  { href: "/#about", label: "Sobre nós" },
-  { href: "/#team", label: "Nosso time" },
+  { href: "/#em-breve", label: "Em breve" },
+  { href: "/#catalogo", label: "Catálogo" },
   { href: "/loja", label: "Loja" },
+  { href: "/#about", label: "Sobre" },
+  { href: "/#contact", label: "Contato" },
 ];
 
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    onScroll();
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <nav className={`lith-nav${scrolled ? " lith-nav--scrolled" : ""}`} id="mainNav">
+    <nav className="lith-nav" id="mainNav" aria-label="Principal">
       <div className="lith-container lith-nav__inner">
-        <Link className="lith-nav__brand" href="/#page-top" onClick={() => setOpen(false)}>
-          <span className="lith-nav__brand-mark">Li</span>
-          <span className="lith-nav__brand-text">
-            Lithium<em>Entertainment</em>
-          </span>
+        <Link className="lith-nav__brand" href="/" onClick={() => setOpen(false)} aria-label="Lithium Entertainment, página inicial">
+          <Lockup />
         </Link>
         <div className="lith-nav__actions">
-          <Link href="/admin/login" className="lith-cart-button" aria-label="Entrar no painel admin">
-            <i className="fas fa-lock"></i>
-          </Link>
           <CartButton />
           <button
-            className={`lith-nav__toggle${open ? " lith-nav__toggle--open" : ""}`}
+            className="lith-nav__toggle"
             type="button"
             aria-controls="navbarResponsive"
             aria-expanded={open}
-            aria-label="Abrir menu"
+            aria-label={open ? "Fechar menu" : "Abrir menu"}
             onClick={() => setOpen((v) => !v)}
           >
             <span></span>
@@ -60,11 +47,6 @@ export default function Nav() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link className="lith-nav__cta" href="/#contact" onClick={() => setOpen(false)}>
-                Fale conosco
-              </Link>
-            </li>
           </ul>
         </div>
       </div>

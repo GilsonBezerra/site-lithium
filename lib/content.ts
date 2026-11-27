@@ -19,6 +19,11 @@ export type Work = {
   author: string | null;
   kindleUrl: string | null;
   printUrl: string | null;
+  // Tipo cru (COMIC/BOOK/GAME), usado no filtro do catálogo
+  type: string;
+  // Linha curta sob o título: preço, "Na Amazon" ou o status
+  note: string;
+  noteIsPrice: boolean;
 };
 
 export type TeamMember = {

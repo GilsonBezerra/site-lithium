@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Lockup } from "@/components/Brand";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,10 +32,7 @@ export default function LoginPage() {
     <div className="lith-admin__login">
       <div className="lith-admin__login-card">
         <div className="lith-admin__login-brand">
-          <span className="lith-nav__brand-mark">Li</span>
-          <span className="lith-nav__brand-text">
-            Lithium<em>Entertainment</em>
-          </span>
+          <Lockup inverse />
         </div>
         <form onSubmit={handleSubmit}>
           <div className="lith-form-group">

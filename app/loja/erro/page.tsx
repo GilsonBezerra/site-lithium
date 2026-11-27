@@ -6,7 +6,7 @@ export default function ErroPage() {
   return (
     <>
       <Nav />
-      <section className="lith-section" style={{ paddingTop: 160, textAlign: "center" }}>
+      <section className="lith-section" style={{ paddingTop: 72, textAlign: "center" }}>
         <div className="lith-container">
           <span className="lith-eyebrow">Pagamento não concluído</span>
           <h2 className="lith-heading" style={{ marginBottom: 20 }}>Algo deu errado</h2>
